@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.ProgressBar">
+        <item name="colorAccent">@color/backgroundColor</item>
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:translationZ">2dp</item>
+        <item name="android:indeterminate">false</item>
+    </style>
+</resources>

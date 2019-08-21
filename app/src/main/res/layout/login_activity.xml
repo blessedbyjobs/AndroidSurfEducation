@@ -1,18 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgroundColor"
+    android:orientation="vertical"
+    tools:context=".login.LoginActivity">
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginRight="16dp"
+        android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+            android:id="@+id/login_field_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:labelText="@string/login_text"
+            app:panelBackgroundColor="@color/backgroundBrighterColor"
+            app:primaryColor="@color/activeColor"
+            app:secondaryColor="@color/inactiveColor"
+            app:errorColor="@color/errorColor">
+
+            <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+                android:id="@+id/login_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/inactiveColor"
+                android:inputType="phone"/>
+
+        </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+
+        <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+            android:id="@+id/password_field_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:labelText="@string/password_text"
+            app:helperText="@string/password_info_text"
+            app:panelBackgroundColor="@color/backgroundBrighterColor"
+            app:primaryColor="@color/activeColor"
+            app:secondaryColor="@color/inactiveColor"
+            app:helperTextColor="@color/inactiveColor"
+            app:errorColor="@color/errorColor"
+            app:endIcon="@drawable/ic_eye">
+
+            <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+                android:id="@+id/password_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/inactiveColor"
+                android:inputType="textPassword" />
+
+        </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AppTheme.Button"
+            android:text="@string/enter_button_text" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:theme="@style/AppTheme.ProgressBar"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="32dp"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>

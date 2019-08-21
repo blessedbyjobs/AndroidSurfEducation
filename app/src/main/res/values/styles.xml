@@ -2,15 +2,27 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         // фикс для экранов с челкой
-        <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="o_mr1">shortEdges</item>
-        <item name="android:windowTranslucentStatus" tools:targetApi="o_mr1">true</item>
-        <item name="android:windowTranslucentNavigation" tools:targetApi="o_mr1">true</item>
+        <item name="android:fitsSystemWindows">true</item>
 
         <item name="colorPrimaryDark">@color/backgroundColor</item>
     </style>
 
     <style name="AppTheme.Launcher">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:text">@drawable/splash_screen</item>
     </style>
 
+    <style name="AppTheme.ProgressBar">
+        <item name="colorAccent">@color/backgroundColor</item>
+        <item name="android:indeterminate">false</item>
+    </style>
+
+    <style name="AppTheme.Button" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/login_button</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginBottom">24dp</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

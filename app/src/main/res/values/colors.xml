@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="backgroundColor">#23213F</color>
+    <color name="backgroundBrighterColor">#2E2C49</color>
     <color name="activeColor">#1EF0D7</color>
+    <color name="inactiveColor">@android:color/white</color>
     <color name="errorColor">#FF575D</color>
     <color name="backgroundDarkColor">#12102B</color>
 </resources>
