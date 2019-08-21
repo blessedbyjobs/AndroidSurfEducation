@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">AndroidSurfEducation</string>
+
+    <string name="login_text">Логин</string>
+    <string name="password_text">Пароль</string>
+    <string name="enter_button_text">Войти</string>
+    <string name="password_info_text">Пароль должен содержать 6 символов</string>
+    <string name="error_text">Поле не может быть пустым</string>
 </resources>
