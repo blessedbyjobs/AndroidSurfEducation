@@ -3,10 +3,14 @@ package com.android.blessed.androidsurfeducation.login;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.blessed.androidsurfeducation.R;
 import com.arellomobile.mvp.MvpAppCompatActivity;
@@ -27,6 +31,7 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
     private ProgressBar mProgressBar;
 
     private boolean mPasswordIsHide = true;
+    private boolean mEndIconWasDestroyed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +62,39 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
             }
         });
 
+        mLoginBoxText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    mLoginBox.setHasFocus(false);
+                    mPasswordBox.setHasFocus(true);
+                }
+                return true;
+            }
+        });
+
         mPasswordBoxText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) showKeyboard();
+                if (hasFocus) {
+                    if (mEndIconWasDestroyed) {
+                        hidePassword();
+                        mEndIconWasDestroyed = false;
+                    }
+                    showKeyboard();
+                }
                 else hideKeyboard(mPasswordBox);
+            }
+        });
+
+        mPasswordBoxText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    mPasswordBox.clearFocus();
+                    hideKeyboard(mPasswordBox);
+                }
+                return false;
             }
         });
 
@@ -82,6 +115,7 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!mPasswordIsHide) hidePassword();
                 if (mLoginPresenter.checkFields(mLoginBoxText.getText().length(), mPasswordBoxText.getText().length())) {
                     if (!mLoginPresenter.isPasswordShort(mPasswordBoxText.getText().length())) {
                         mLoginPresenter.loginUser(getLogin(), getPassword());
@@ -109,6 +143,7 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
 
     @Override
     public void showError(TextFieldBoxes textFieldBox, ExtendedEditText editTextFieldBox) {
+        Log.i("Error", String.valueOf(editTextFieldBox.getText().length()));
         if (mLoginPresenter.isFieldEmpty(editTextFieldBox.getText().length())) textFieldBox.setError(getResources().getString(R.string.error_text),false);
     }
 
@@ -116,6 +151,10 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
     public void showErrors() {
         showError(mLoginBox, mLoginBoxText);
         showError(mPasswordBox, mPasswordBoxText);
+
+        // если все поля пустые и нажать "Войти" отображается иконка, хотя не должна
+        mPasswordBox.removeEndIcon();
+        hidePassword();
     }
 
     @Override
@@ -148,7 +187,7 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
 
     @Override
     public void hideKeyboard(TextFieldBoxes textFieldBox) {
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(textFieldBox.getWindowToken(), 0);
     }
 
@@ -164,6 +203,9 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
     public void unfocusFields() {
         mLoginBox.setHasFocus(false);
         mPasswordBox.setHasFocus(false);
+
+        mPasswordBox.removeEndIcon();
+        mEndIconWasDestroyed = true;
     }
 
     @Override
