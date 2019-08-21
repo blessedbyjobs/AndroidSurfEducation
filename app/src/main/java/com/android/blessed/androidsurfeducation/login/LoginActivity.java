@@ -82,9 +82,9 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mLoginPresenter.checkFields(mLoginBoxText, mPasswordBoxText)) {
+                if (mLoginPresenter.checkFields(mLoginBoxText.getText().length(), mPasswordBoxText.getText().length())) {
                     if (!mLoginPresenter.isPasswordShort(mPasswordBoxText.getText().length())) {
-                        mLoginPresenter.startAsyncTask();
+                        mLoginPresenter.loginUser(getLogin(), getPassword());
                     } else {
                         showPasswordError();
                     }
@@ -109,7 +109,7 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
 
     @Override
     public void showError(TextFieldBoxes textFieldBox, ExtendedEditText editTextFieldBox) {
-        if (mLoginPresenter.isFieldEmpty(editTextFieldBox)) textFieldBox.setError(getResources().getString(R.string.error_text),false);
+        if (mLoginPresenter.isFieldEmpty(editTextFieldBox.getText().length())) textFieldBox.setError(getResources().getString(R.string.error_text),false);
     }
 
     @Override
@@ -150,6 +150,14 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
     public void hideKeyboard(TextFieldBoxes textFieldBox) {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(textFieldBox.getWindowToken(), 0);
+    }
+
+    public String getLogin() {
+        return mLoginBoxText.getText().toString();
+    }
+
+    public String getPassword() {
+        return mPasswordBoxText.getText().toString();
     }
 
     @Override
