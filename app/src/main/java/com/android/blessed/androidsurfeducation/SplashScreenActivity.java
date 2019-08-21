@@ -7,6 +7,8 @@ import android.os.Handler;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.blessed.androidsurfeducation.login.LoginActivity;
+
 public class SplashScreenActivity extends AppCompatActivity {
     private static int SPLASH_SCREEN_TIME_OUT = 300;
 

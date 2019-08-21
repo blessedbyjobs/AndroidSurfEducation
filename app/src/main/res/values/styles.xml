@@ -10,7 +10,10 @@
     </style>
 
     <style name="AppTheme.Launcher">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:text">@drawable/splash_screen</item>
     </style>
 
+    <style name="AppTheme.ProgressBar">
+        <item name="colorAccent">@color/backgroundColor</item>
+    </style>
 </resources>
