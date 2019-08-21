@@ -13,7 +13,13 @@ import studio.carbonylgroup.textfieldboxes.TextFieldBoxes;
 
 @InjectViewState
 public class LoginPresenter extends MvpPresenter<LoginView> implements LoginContract.Presenter {
-    public LoginPresenter() {
+    private static final int MIN_PASSWORD_LENGTH = 6;
+
+    public LoginPresenter() { }
+
+    @Override
+    public boolean isPasswordShort(int passwordLength) {
+        return passwordLength < MIN_PASSWORD_LENGTH;
     }
 
     @Override

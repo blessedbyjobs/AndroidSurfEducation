@@ -68,24 +68,16 @@
             android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/login_button"
-            android:text="@string/enter_button_text"
-            />
+            style="@style/AppTheme.Button"
+            android:text="@string/enter_button_text" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
-            android:theme="@style/AppTheme.ProgressBar"
-            android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_gravity="bottom|center"
+            android:layout_width="32dp"
+            android:theme="@style/AppTheme.ProgressBar"
+            android:layout_gravity="center|bottom"
             android:layout_marginBottom="32dp"
-            android:indeterminate="false"
-            android:translationZ="2dp"
-            android:visibility="gone"
-            tools:targetApi="lollipop" />
+            android:visibility="gone" />
     </FrameLayout>
 </LinearLayout>

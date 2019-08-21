@@ -6,4 +6,5 @@
     <string name="enter_button_text">Войти</string>
     <string name="password_info_text">Пароль должен содержать 6 символов</string>
     <string name="error_text">Поле не может быть пустым</string>
+    <string name="password_error_text">Слишком короткий пароль</string>
 </resources>
