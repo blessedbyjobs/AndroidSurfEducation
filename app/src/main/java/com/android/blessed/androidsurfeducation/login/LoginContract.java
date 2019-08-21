@@ -1,13 +1,11 @@
 package com.android.blessed.androidsurfeducation.login;
 
-import studio.carbonylgroup.textfieldboxes.ExtendedEditText;
-
 public interface LoginContract {
     interface Presenter {
         boolean isPasswordShort(int length);
-        boolean isFieldEmpty(ExtendedEditText textFieldBox);
-        boolean checkFields(ExtendedEditText textFieldBox1, ExtendedEditText textFieldBox2);
-        void startAsyncTask();
+        boolean isFieldEmpty(int textFieldBoxLength);
+        boolean checkFields(int textFieldBox1Length, int textFieldBox2Length);
+        void loginUser(String login, String password);
     }
 
     interface Model {
