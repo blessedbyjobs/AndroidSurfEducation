@@ -1,6 +1,7 @@
 package com.android.blessed.androidsurfeducation.login;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -12,16 +13,34 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
+import com.android.blessed.androidsurfeducation.MainActivity;
 import com.android.blessed.androidsurfeducation.R;
+import com.android.blessed.androidsurfeducation.SplashScreenActivity;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.io.Serializable;
+
+import javax.inject.Inject;
 
 import studio.carbonylgroup.textfieldboxes.ExtendedEditText;
 import studio.carbonylgroup.textfieldboxes.TextFieldBoxes;
 
 public class LoginActivity extends MvpAppCompatActivity implements LoginView {
+    PreferencesHelper mCache;
+
     @InjectPresenter
     LoginPresenter mLoginPresenter;
+
+    @ProvidePresenter
+    LoginPresenter provideLoginPresenter() {
+        mCache = new PreferencesHelper(getApplicationContext());
+        return new LoginPresenter(mCache);
+    }
 
     private TextFieldBoxes mLoginBox;
     private TextFieldBoxes mPasswordBox;
@@ -42,7 +61,6 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
         setOnClickListeners();
     }
 
-    @Override
     public void initializeFields() {
         mLoginBox = findViewById(R.id.login_field_box);
         mPasswordBox = findViewById(R.id.password_field_box);
@@ -52,7 +70,6 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
         mLoginButton = findViewById(R.id.login_button);
     }
 
-    @Override
     public void setOnClickListeners() {
         mLoginBoxText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -189,6 +206,28 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
     public void hideKeyboard(TextFieldBoxes textFieldBox) {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(textFieldBox.getWindowToken(), 0);
+    }
+
+    @Override
+    public void moveToMainScreen() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void showLoginError() {
+        setUpSnackBar().show();
+    }
+
+    private Snackbar setUpSnackBar() {
+        Snackbar mSnackBar = Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.login_error_text), Snackbar.LENGTH_LONG);
+        View mSnackBarView = mSnackBar.getView();
+        mSnackBarView.setBackgroundColor(ContextCompat.getColor(this, R.color.errorColor));
+        TextView mSnackBarText = mSnackBarView.findViewById(com.google.android.material.R.id.snackbar_text);
+        mSnackBarText.setTextColor(getResources().getColor(R.color.inactiveColor));
+
+        return mSnackBar;
     }
 
     public String getLogin() {
