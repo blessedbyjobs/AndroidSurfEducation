@@ -1,7 +1,6 @@
 package com.android.blessed.androidsurfeducation.login;
 
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 
 import com.android.blessed.androidsurfeducation.models.LoginRequest;
@@ -10,19 +9,21 @@ import com.android.blessed.androidsurfeducation.network.NetworkService;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
-import java.util.concurrent.TimeUnit;
+import org.jetbrains.annotations.NotNull;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import studio.carbonylgroup.textfieldboxes.ExtendedEditText;
-import studio.carbonylgroup.textfieldboxes.TextFieldBoxes;
 
 @InjectViewState
-public class LoginPresenter extends MvpPresenter<LoginView> implements LoginContract.Presenter {
+public class LoginPresenter extends MvpPresenter<LoginView> implements LoginPresenterMVP {
+    private PreferencesHelper mPreferencesHelper;
+
     private static final int MIN_PASSWORD_LENGTH = 6;
 
-    public LoginPresenter() { }
+    public LoginPresenter(PreferencesHelper preferencesHelper) {
+        mPreferencesHelper = preferencesHelper;
+    }
 
     @Override
     public boolean isPasswordShort(int passwordLength) {
@@ -41,13 +42,31 @@ public class LoginPresenter extends MvpPresenter<LoginView> implements LoginCont
 
     @Override
     public void loginUser(String login, String password) {
-        new Login(new LoginRequest(login, password)).execute();
+        new LoginTask(new LoginRequest(login, password)).execute();
     }
 
-    private class Login extends AsyncTask<Void, Void, Void> {
+    private void sendRequest(LoginRequest mRequest) {
+        NetworkService.getInstance().getServerAPI()
+                .loginUser(mRequest)
+                .enqueue(new Callback<LoginResponse>() {
+                    @Override
+                    public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
+                        LoginResponse mResponse = response.body();
+                        mPreferencesHelper.saveData(mResponse);
+                        getViewState().moveToMainScreen();
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<LoginResponse> call, @NotNull Throwable t) {
+                        getViewState().showLoginError();
+                    }
+                });
+    }
+
+    private class LoginTask extends AsyncTask<Void, Void, Void> {
         private LoginRequest mRequest;
 
-        public Login(LoginRequest request) {
+        public LoginTask(LoginRequest request) {
             mRequest = request;
         }
 
@@ -60,11 +79,7 @@ public class LoginPresenter extends MvpPresenter<LoginView> implements LoginCont
 
         @Override
         protected Void doInBackground(Void... voids) {
-            try {
-                TimeUnit.SECONDS.sleep(3);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            sendRequest(mRequest);
             return null;
         }
 
@@ -74,5 +89,5 @@ public class LoginPresenter extends MvpPresenter<LoginView> implements LoginCont
             getViewState().setProgressBarVisibility(View.INVISIBLE);
             getViewState().enableLoginButton();
         }
-    };
+    }
 }
