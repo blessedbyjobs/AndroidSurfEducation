@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">AndroidSurfEducation</string>
+    <string name="main_activity_name">Популярные мемы</string>
 
     <string name="login_text">Логин</string>
     <string name="password_text">Пароль</string>
@@ -8,4 +9,9 @@
     <string name="error_text">Поле не может быть пустым</string>
     <string name="password_error_text">Слишком короткий пароль</string>
     <string name="login_error_text">Вы ввели неверные данные.\nПопробуйте еще раз</string>
+    <string name="search_hint">Найди мем по душе</string>
+    
+    <string name="bottom_memes">Мемы</string>
+    <string name="bottom_add_meme">Добавить мем</string>
+    <string name="bottom_profile">Профиль</string>
 </resources>
