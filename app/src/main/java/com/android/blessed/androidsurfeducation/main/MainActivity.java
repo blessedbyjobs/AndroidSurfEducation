@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -16,6 +19,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends MvpAppCompatActivity {
     private Toolbar mToolbar;
     private BottomNavigationView mBottomNavigationView;
+
+    private ImageView mLike;
+    private ImageView mShare;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -38,6 +44,20 @@ public class MainActivity extends MvpAppCompatActivity {
         setContentView(R.layout.main_activity);
 
         mToolbar = findViewById(R.id.toolbar);
+        mLike = findViewById(R.id.like_meme_image_view);
+        mLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        mShare = findViewById(R.id.share_meme_image_view);
+        mShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         setSupportActionBar(mToolbar);
 
         loadFragment(new MemesFragment());
