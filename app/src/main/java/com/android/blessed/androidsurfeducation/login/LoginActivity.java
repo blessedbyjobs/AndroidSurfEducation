@@ -135,6 +135,9 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
                     }
                 } else {
                     showErrors();
+
+                    // если логин пустой, а пароль короткий -> отобразить ошибку
+                    if (mLoginPresenter.isPasswordShort(mPasswordBoxText.getText().length())) showPasswordError();
                     unfocusFields();
                 }
             }
