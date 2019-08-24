@@ -14,4 +14,7 @@
     <string name="bottom_memes">Мемы</string>
     <string name="bottom_add_meme">Добавить мем</string>
     <string name="bottom_profile">Профиль</string>
+
+    <string name="internet_error_text">Отсутствует интернет-соединение.\nПопробуйте позже</string>
+    <string name="memes_query_error_text">Не удалось загрузить ленту\nОбновите экран или попробуйте позже</string>
 </resources>

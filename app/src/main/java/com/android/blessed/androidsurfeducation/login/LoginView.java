@@ -26,4 +26,5 @@ public interface LoginView extends MvpView {
     void moveToMainScreen();
 
     void showLoginError();
+    void showInternetError();
 }

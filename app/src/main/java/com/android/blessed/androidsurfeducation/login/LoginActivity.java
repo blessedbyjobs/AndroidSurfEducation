@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -12,8 +13,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
+import com.android.blessed.androidsurfeducation.CustomSnackBar;
 import com.android.blessed.androidsurfeducation.main.MainActivity;
 import com.android.blessed.androidsurfeducation.R;
 import com.arellomobile.mvp.MvpAppCompatActivity;
@@ -213,17 +213,18 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
 
     @Override
     public void showLoginError() {
-        setUpSnackBar().show();
+        setUpSnackBar(getResources().getString(R.string.login_error_text)).show();
     }
 
-    private Snackbar setUpSnackBar() {
-        Snackbar mSnackBar = Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.login_error_text), Snackbar.LENGTH_LONG);
-        View mSnackBarView = mSnackBar.getView();
-        mSnackBarView.setBackgroundColor(ContextCompat.getColor(this, R.color.errorColor));
-        TextView mSnackBarText = mSnackBarView.findViewById(com.google.android.material.R.id.snackbar_text);
-        mSnackBarText.setTextColor(getResources().getColor(R.color.inactiveColor));
+    @Override
+    public void showInternetError() {
+        setUpSnackBar(getResources().getString(R.string.internet_error_text)).show();
+    }
 
-        return mSnackBar;
+    private Snackbar setUpSnackBar(String text) {
+        return new CustomSnackBar(Snackbar.make(findViewById(android.R.id.content),
+                text, Snackbar.LENGTH_LONG), this)
+                .getSnackbar();
     }
 
     public String getLogin() {

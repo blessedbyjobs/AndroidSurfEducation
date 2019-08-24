@@ -4,24 +4,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.android.blessed.androidsurfeducation.R;
-import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends MvpAppCompatActivity {
+public class MainActivity extends AppCompatActivity {
+    private FrameLayout mFragmentContainer;
+
     private Toolbar mToolbar;
     private BottomNavigationView mBottomNavigationView;
-
-    private ImageView mLike;
-    private ImageView mShare;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -43,31 +40,36 @@ public class MainActivity extends MvpAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        mToolbar = findViewById(R.id.toolbar);
-        mLike = findViewById(R.id.like_meme_image_view);
-        mLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        initializeFields();
+        setOnClickListeners();
 
-            }
-        });
-        mShare = findViewById(R.id.share_meme_image_view);
-        mShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
         setSupportActionBar(mToolbar);
 
         loadFragment(new MemesFragment());
+    }
 
+    private boolean loadFragment(Fragment fragment) {
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
+    }
+
+    private void initializeFields() {
+        mToolbar = findViewById(R.id.toolbar);
         mBottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        mFragmentContainer = findViewById(R.id.fragment_container);
+    }
+
+    private void setOnClickListeners() {
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment = null;
-
                 switch (item.getItemId()) {
                     case R.id.bottom_navigation_memes:
                         fragment = new MemesFragment();
@@ -85,16 +87,5 @@ public class MainActivity extends MvpAppCompatActivity {
                 return loadFragment(fragment);
             }
         });
-    }
-
-    private boolean loadFragment(Fragment fragment) {
-        if (fragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .commit();
-            return true;
-        }
-        return false;
     }
 }
