@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class PreferencesHelper implements LoginModel {
+public class PreferencesHelper implements SharedPreferencesHelper {
     private final SharedPreferences mPref;
 
     public static final String PREF_FILE_NAME = "surf_android_education_pref_file";
@@ -29,47 +29,31 @@ public class PreferencesHelper implements LoginModel {
         mPref.edit().clear().apply();
     }
 
-    private void putField(String name, String value) {
+    private void putString(String name, String value) {
         mPref.edit().putString(name, value).apply();
     }
 
-    @Override
-    public String getToken() {
-        return mPref.getString(TOKEN, null);
+    private void putInt(String name, int value) {
+        mPref.edit().putInt(name, value).apply();
     }
 
     @Override
-    public int getId() {
-        return Integer.parseInt(mPref.getString(ID, null));
+    public String getString(String fieldName) {
+        return mPref.getString(fieldName, null);
     }
 
     @Override
-    public String getUsername() {
-        return mPref.getString(USERNAME, null);
-    }
-
-    @Override
-    public String getFirstName() {
-        return mPref.getString(FIRSTNAME, null);
-    }
-
-    @Override
-    public String getLastName() {
-        return mPref.getString(LASTNAME, null);
-    }
-
-    @Override
-    public String getUserDescription() {
-        return mPref.getString(USERDESCRIPTION, null);
+    public int getInt(String fieldName) {
+        return mPref.getInt(fieldName, 0);
     }
 
     @Override
     public void saveData(LoginResponse response) {
-        putField(TOKEN, response.getAccessToken());
-        putField(ID, String.valueOf(response.getUserInfo().getId()));
-        putField(USERNAME, response.getUserInfo().getUsername());
-        putField(FIRSTNAME, response.getUserInfo().getFirstName());
-        putField(LASTNAME, response.getUserInfo().getLastName());
-        putField(USERDESCRIPTION, response.getUserInfo().getUserDescription());
+        putString(TOKEN, response.getAccessToken());
+        putInt(ID, response.getUserInfo().getId());
+        putString(USERNAME, response.getUserInfo().getUsername());
+        putString(FIRSTNAME, response.getUserInfo().getFirstName());
+        putString(LASTNAME, response.getUserInfo().getLastName());
+        putString(USERDESCRIPTION, response.getUserInfo().getUserDescription());
     }
 }
