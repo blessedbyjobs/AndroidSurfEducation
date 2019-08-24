@@ -32,4 +32,8 @@
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="android:background">@color/backgroundBrighterColor</item>
     </style>
+
+    <style name="AppTheme.CardView">
+        <item name="android:background">@drawable/meme_card_button</item>
+    </style>
 </resources>
