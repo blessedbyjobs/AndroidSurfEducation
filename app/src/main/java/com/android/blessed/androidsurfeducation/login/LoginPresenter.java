@@ -11,6 +11,8 @@ import com.arellomobile.mvp.MvpPresenter;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,7 +60,12 @@ public class LoginPresenter extends MvpPresenter<LoginView> implements LoginPres
 
                     @Override
                     public void onFailure(@NotNull Call<LoginResponse> call, @NotNull Throwable t) {
-                        getViewState().showLoginError();
+                        if (t instanceof IOException) {
+                            getViewState().showInternetError();
+                        }
+                        else {
+                            getViewState().showLoginError();
+                        }
                     }
                 });
     }

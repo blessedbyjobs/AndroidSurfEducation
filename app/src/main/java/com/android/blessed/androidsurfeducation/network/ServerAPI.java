@@ -2,15 +2,19 @@ package com.android.blessed.androidsurfeducation.network;
 
 import com.android.blessed.androidsurfeducation.models.LoginRequest;
 import com.android.blessed.androidsurfeducation.models.LoginResponse;
+import com.android.blessed.androidsurfeducation.models.MemesResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.HTTP;
-import retrofit2.http.Part;
-import retrofit2.http.Path;
+import retrofit2.http.POST;
 
 public interface ServerAPI {
-    @HTTP(method = "POST", path = "/auth/login", hasBody = true)
+    @POST(ServerUrls.LOGIN)
     Call<LoginResponse> loginUser(@Body LoginRequest request);
+
+    @GET(ServerUrls.GET_MEMES)
+    Call<List<MemesResponse>> getMemes();
 }

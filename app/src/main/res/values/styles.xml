@@ -16,6 +16,11 @@
         <item name="android:indeterminate">false</item>
     </style>
 
+    <style name="AppTheme.MemesProgressBar">
+        <item name="colorAccent">@color/activeColor</item>
+        <item name="android:indeterminate">false</item>
+    </style>
+
     <style name="AppTheme.Button" parent="@android:style/Widget.Button">
         <item name="android:background">@drawable/login_button</item>
         <item name="android:layout_marginLeft">16dp</item>
