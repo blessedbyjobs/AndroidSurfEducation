@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -15,17 +14,12 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.android.blessed.androidsurfeducation.MainActivity;
+import com.android.blessed.androidsurfeducation.main.MainActivity;
 import com.android.blessed.androidsurfeducation.R;
-import com.android.blessed.androidsurfeducation.SplashScreenActivity;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.io.Serializable;
-
-import javax.inject.Inject;
 
 import studio.carbonylgroup.textfieldboxes.ExtendedEditText;
 import studio.carbonylgroup.textfieldboxes.TextFieldBoxes;
@@ -141,6 +135,9 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
                     }
                 } else {
                     showErrors();
+
+                    // если логин пустой, а пароль короткий -> отобразить ошибку
+                    if (mLoginPresenter.isPasswordShort(mPasswordBoxText.getText().length())) showPasswordError();
                     unfocusFields();
                 }
             }
@@ -160,7 +157,6 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
 
     @Override
     public void showError(TextFieldBoxes textFieldBox, ExtendedEditText editTextFieldBox) {
-        Log.i("Error", String.valueOf(editTextFieldBox.getText().length()));
         if (mLoginPresenter.isFieldEmpty(editTextFieldBox.getText().length())) textFieldBox.setError(getResources().getString(R.string.error_text),false);
     }
 
