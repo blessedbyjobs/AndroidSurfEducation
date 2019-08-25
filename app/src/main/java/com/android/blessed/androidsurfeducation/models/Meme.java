@@ -3,7 +3,7 @@ package com.android.blessed.androidsurfeducation.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MemesResponse {
+public class Meme {
     @SerializedName("id")
     @Expose
     private String id;

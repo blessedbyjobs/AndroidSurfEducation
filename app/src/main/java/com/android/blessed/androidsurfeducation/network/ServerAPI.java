@@ -2,7 +2,7 @@ package com.android.blessed.androidsurfeducation.network;
 
 import com.android.blessed.androidsurfeducation.models.LoginRequest;
 import com.android.blessed.androidsurfeducation.models.LoginResponse;
-import com.android.blessed.androidsurfeducation.models.MemesResponse;
+import com.android.blessed.androidsurfeducation.models.Meme;
 
 import java.util.List;
 
@@ -16,5 +16,5 @@ public interface ServerAPI {
     Call<LoginResponse> loginUser(@Body LoginRequest request);
 
     @GET(ServerUrls.GET_MEMES)
-    Call<List<MemesResponse>> getMemes();
+    Call<List<Meme>> getMemes();
 }
