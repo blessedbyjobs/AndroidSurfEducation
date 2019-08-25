@@ -2,6 +2,7 @@ package com.android.blessed.androidsurfeducation.main;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.blessed.androidsurfeducation.global.CustomSnackBar;
 import com.android.blessed.androidsurfeducation.R;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MemesFragment extends MvpAppCompatFragment implements MemesView {
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
 
@@ -56,6 +59,7 @@ public class MemesFragment extends MvpAppCompatFragment implements MemesView {
         mTextView = getView().findViewById(R.id.error_textview);
         mProgressBar = getView().findViewById(R.id.progress_bar);
         mRecyclerView = getView().findViewById(R.id.memes_recycler_view);
+        mSwipeRefreshLayout = getView().findViewById(R.id.swipe_to_refresh_memes);
 
         mMemes = new ArrayList<>();
 
@@ -66,6 +70,15 @@ public class MemesFragment extends MvpAppCompatFragment implements MemesView {
 
         mAdapter = new MemesAdapter(getActivity(), mMemes);
         mRecyclerView.setAdapter(mAdapter);
+
+        mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.activeColor));
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mMemesPresenter.loadMemes();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override
