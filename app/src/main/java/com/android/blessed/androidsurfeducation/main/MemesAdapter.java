@@ -2,19 +2,22 @@ package com.android.blessed.androidsurfeducation.main;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.blessed.androidsurfeducation.R;
 import com.android.blessed.androidsurfeducation.models.Meme;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 
 import org.jetbrains.annotations.NotNull;
@@ -76,9 +79,23 @@ public class MemesAdapter extends RecyclerView.Adapter<MemesAdapter.MemesViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NotNull MemesViewHolder holder, int position) {
+    public void onBindViewHolder(@NotNull final MemesViewHolder holder, int position) {
         Meme mMemeData = mMemesList.get(position);
-        Glide.with(mContext).load(mMemeData.getPhotoUtl()).into(holder.mMeme);
+        Glide.with(mContext)
+                .asBitmap()
+                .load(mMemeData.getPhotoUtl())
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        holder.mMeme.setImageBitmap(resource);
+                        holder.mMeme.setScaleType(ImageView.ScaleType.FIT_XY);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+                });
         holder.mMemeTitle.setText(mMemeData.getTitle());
     }
 
