@@ -6,4 +6,5 @@
     <color name="inactiveColor">@android:color/white</color>
     <color name="errorColor">#FF575D</color>
     <color name="backgroundDarkColor">#12102B</color>
+    <color name="requestErrorColor">#9FACC7</color>
 </resources>

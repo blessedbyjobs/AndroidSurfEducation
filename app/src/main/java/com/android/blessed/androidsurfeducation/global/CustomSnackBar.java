@@ -1,4 +1,4 @@
-package com.android.blessed.androidsurfeducation;
+package com.android.blessed.androidsurfeducation.global;
 
 import android.content.Context;
 import android.view.View;
@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import com.android.blessed.androidsurfeducation.R;
 import com.google.android.material.snackbar.Snackbar;
 
 public class CustomSnackBar {

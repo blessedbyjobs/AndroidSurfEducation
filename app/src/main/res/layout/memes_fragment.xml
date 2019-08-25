@@ -5,7 +5,7 @@
     android:background="@color/backgroundColor">
 
     <TextView
-        android:id="@+id/error_text"
+        android:id="@+id/error_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -13,7 +13,7 @@
         android:text="@string/memes_query_error_text"
         android:textSize="14sp"
         android:gravity="center_horizontal"
-        android:textColor="@color/inactiveColor"
+        android:textColor="@color/requestErrorColor"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
         android:visibility="invisible"/>
 
@@ -24,5 +24,14 @@
         android:theme="@style/AppTheme.MemesProgressBar"
         android:layout_centerInParent="true"
         android:visibility="invisible"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/memes_recycler_view"
+        android:scrollbars="vertical"
+        android:overScrollMode="never">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </RelativeLayout>

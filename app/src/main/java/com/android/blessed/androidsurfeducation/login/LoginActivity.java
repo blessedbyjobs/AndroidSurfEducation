@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -13,7 +12,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.android.blessed.androidsurfeducation.CustomSnackBar;
+import com.android.blessed.androidsurfeducation.global.CustomSnackBar;
 import com.android.blessed.androidsurfeducation.main.MainActivity;
 import com.android.blessed.androidsurfeducation.R;
 import com.arellomobile.mvp.MvpAppCompatActivity;

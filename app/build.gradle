@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+repositories {
+    mavenCentral()
+    google()
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"

@@ -2,6 +2,7 @@ package com.android.blessed.androidsurfeducation.main;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.android.blessed.androidsurfeducation.CustomSnackBar;
+import com.android.blessed.androidsurfeducation.global.CustomSnackBar;
 import com.android.blessed.androidsurfeducation.R;
+import com.android.blessed.androidsurfeducation.models.Meme;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -20,7 +24,18 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MemesFragment extends MvpAppCompatFragment implements MemesView {
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+
+    private List<Meme> mMemes;
+
+    private TextView mTextView;
+    private ProgressBar mProgressBar;
+
     @InjectPresenter
     MemesPresenter mMemesPresenter;
 
@@ -28,9 +43,6 @@ public class MemesFragment extends MvpAppCompatFragment implements MemesView {
     MemesPresenter provideLoginPresenter() {
         return new MemesPresenter();
     }
-
-    private TextView mTextView;
-    private ProgressBar mProgressBar;
 
     @Nullable
     @Override
@@ -41,21 +53,36 @@ public class MemesFragment extends MvpAppCompatFragment implements MemesView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mTextView = getView().findViewById(R.id.error_text);
+        mTextView = getView().findViewById(R.id.error_textview);
         mProgressBar = getView().findViewById(R.id.progress_bar);
+        mRecyclerView = getView().findViewById(R.id.memes_recycler_view);
+
+        mMemes = new ArrayList<>();
+
+        mRecyclerView.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(getConfiguration(), StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new MemesAdapter(getActivity(), mMemes);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        preExecute();
-        mMemesPresenter.loadMemes();
-        postExecute();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        mMemesPresenter.loadMemes();
+    }
+
+    @Override
+    public void onPause() {
+        setRetainInstance(true);
+        super.onPause();
     }
 
     @Override
@@ -78,8 +105,15 @@ public class MemesFragment extends MvpAppCompatFragment implements MemesView {
         mTextView.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void updateMemes(List<Meme> memes) {
+        mMemes.clear();
+        mMemes.addAll(memes);
+        mAdapter.notifyDataSetChanged();
+    }
+
     private Snackbar setUpSnackBar() {
-        return new CustomSnackBar(Snackbar.make(getView().findViewById(R.id.error_text),
+        return new CustomSnackBar(Snackbar.make(getView().findViewById(R.id.error_textview),
                 getResources().getString(R.string.internet_error_text), Snackbar.LENGTH_LONG), getActivity())
                 .getSnackbar();
     }
@@ -92,13 +126,23 @@ public class MemesFragment extends MvpAppCompatFragment implements MemesView {
         getView().getBackground().setColorFilter(getResources().getColor(R.color.backgroundColor), PorterDuff.Mode.CLEAR);
     }
 
-    private void preExecute() {
+    @Override
+    public void preExecute() {
         setDarkening();
         showProgressBar();
     }
 
-    private void postExecute() {
+    @Override
+    public void postExecute() {
         hideProgressBar();
         unsetDarkening();
+    }
+
+    private int getConfiguration() {
+        int numberOfColumns = 2;
+        if (getResources().getConfiguration().orientation == getResources().getConfiguration().ORIENTATION_LANDSCAPE)
+            numberOfColumns = 4;
+
+        return numberOfColumns;
     }
 }
