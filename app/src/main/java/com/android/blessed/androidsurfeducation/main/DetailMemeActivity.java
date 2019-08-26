@@ -96,7 +96,7 @@ public class DetailMemeActivity extends MvpAppCompatActivity implements DetailMe
 
     @BindingAdapter({"bind:dateText"})
     public static void setDateText(TextView textView, String date) {
-        long diffInDays = TimeUnit.DAYS.convert(new Date().getTime() - Long.parseLong(date), TimeUnit.MILLISECONDS);
+        long diffInDays = TimeUnit.DAYS.convert(new Date().getTime() - 1000 * Long.parseLong(date), TimeUnit.MILLISECONDS);
 
         if (diffInDays < 30) textView.setText(GlobalApplication.getAppContext().getResources().getQuantityString(R.plurals.meme_publication_date_days, (int) diffInDays, (int) diffInDays));
         else {
