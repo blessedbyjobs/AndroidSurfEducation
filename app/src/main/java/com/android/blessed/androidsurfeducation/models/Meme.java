@@ -1,9 +1,13 @@
 package com.android.blessed.androidsurfeducation.models;
 
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Meme {
+import java.io.Serializable;
+
+public class Meme implements Serializable {
     @SerializedName("id")
     @Expose
     private String id;

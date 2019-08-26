@@ -1,9 +1,8 @@
 package com.android.blessed.androidsurfeducation.main;
 
+import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -32,7 +32,7 @@ import java.util.List;
 public class MemesFragment extends MvpAppCompatFragment implements MemesView {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private MemesAdapter mAdapter;
 
     private List<Meme> mMemes;
 
@@ -72,12 +72,9 @@ public class MemesFragment extends MvpAppCompatFragment implements MemesView {
         mRecyclerView.setAdapter(mAdapter);
 
         mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.activeColor));
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mMemesPresenter.loadMemes();
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mMemesPresenter.loadMemes();
+            mSwipeRefreshLayout.setRefreshing(false);
         });
     }
 
@@ -119,10 +116,11 @@ public class MemesFragment extends MvpAppCompatFragment implements MemesView {
     }
 
     @Override
-    public void updateMemes(List<Meme> memes) {
-        mMemes.clear();
-        mMemes.addAll(memes);
-        mAdapter.notifyDataSetChanged();
+    public void updateMemes(List<Meme> mNewMemes) {
+        MemesDiffUtilCallback memesDiffUtilCallback = new MemesDiffUtilCallback(mAdapter.getData(), mNewMemes);
+        DiffUtil.DiffResult memesDiffResult = DiffUtil.calculateDiff(memesDiffUtilCallback);
+        mAdapter.setData(mNewMemes);
+        memesDiffResult.dispatchUpdatesTo(mAdapter);
     }
 
     private Snackbar setUpSnackBar() {
@@ -153,7 +151,8 @@ public class MemesFragment extends MvpAppCompatFragment implements MemesView {
 
     private int getConfiguration() {
         int numberOfColumns = 2;
-        if (getResources().getConfiguration().orientation == getResources().getConfiguration().ORIENTATION_LANDSCAPE)
+        getResources().getConfiguration();
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             numberOfColumns = 4;
 
         return numberOfColumns;

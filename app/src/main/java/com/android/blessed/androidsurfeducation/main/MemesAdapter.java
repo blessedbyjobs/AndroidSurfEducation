@@ -1,9 +1,11 @@
 package com.android.blessed.androidsurfeducation.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import com.bumptech.glide.request.transition.Transition;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class MemesAdapter extends RecyclerView.Adapter<MemesAdapter.MemesViewHolder> {
@@ -39,25 +42,19 @@ public class MemesAdapter extends RecyclerView.Adapter<MemesAdapter.MemesViewHol
             mLikeMeme = itemView.findViewById(R.id.like_meme_image_view);
             mShareMeme = itemView.findViewById(R.id.share_meme_image_view);
 
-            mLikeMeme.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (!mFavouriteMeme) {
-                        mLikeMeme.setImageResource(R.drawable.ic_like_meme_active);
-                        mFavouriteMeme = true;
-                    }
-                    else {
-                        mLikeMeme.setImageResource(R.drawable.ic_favorite);
-                        mFavouriteMeme = false;
-                    }
+            mLikeMeme.setOnClickListener(view -> {
+                if (!mFavouriteMeme) {
+                    mLikeMeme.setImageResource(R.drawable.ic_like_meme_active);
+                    mFavouriteMeme = true;
+                }
+                else {
+                    mLikeMeme.setImageResource(R.drawable.ic_favorite);
+                    mFavouriteMeme = false;
                 }
             });
 
-            mShareMeme.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            mShareMeme.setOnClickListener(view -> {
 
-                }
             });
         }
     }
@@ -79,7 +76,7 @@ public class MemesAdapter extends RecyclerView.Adapter<MemesAdapter.MemesViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NotNull final MemesViewHolder holder, int position) {
+    public void onBindViewHolder(@NotNull final MemesViewHolder holder, final int position) {
         Meme mMemeData = mMemesList.get(position);
         Glide.with(mContext)
                 .asBitmap()
@@ -97,10 +94,25 @@ public class MemesAdapter extends RecyclerView.Adapter<MemesAdapter.MemesViewHol
                     }
                 });
         holder.mMemeTitle.setText(mMemeData.getTitle());
+
+        // старт активити детального мема
+        holder.itemView.setOnClickListener(view -> {
+            Intent i = new Intent(view.getContext(), DetailMemeActivity.class);
+            i.putExtra("MEME", mMemesList.get(position));
+            view.getContext().startActivity(i);
+        });
     }
 
     @Override
     public int getItemCount() {
         return mMemesList.size();
+    }
+
+    public List<Meme> getData() {
+        return mMemesList;
+    }
+
+    public void setData(List<Meme> memes) {
+        this.mMemesList = memes;
     }
 }

@@ -38,6 +38,13 @@
         <item name="android:background">@color/backgroundBrighterColor</item>
     </style>
 
+    <style name="AppTheme.MemeToolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="android:background">@color/backgroundColor</item>
+    </style>
+
     <style name="AppTheme.CardView">
         <item name="android:background">@drawable/meme_card_button</item>
     </style>
