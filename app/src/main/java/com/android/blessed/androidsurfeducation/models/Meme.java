@@ -1,37 +1,39 @@
 package com.android.blessed.androidsurfeducation.models;
 
-import android.os.Parcelable;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+@Entity(tableName = "memes")
 public class Meme implements Serializable {
-    @SerializedName("id")
-    @Expose
-    private String id;
-    @SerializedName("title")
-    @Expose
+    @SerializedName("id") @Expose
+    @PrimaryKey(autoGenerate = true)
+    private long id;
+
+    @SerializedName("title") @Expose
     private String title;
-    @SerializedName("description")
-    @Expose
+
+    @SerializedName("description") @Expose
     private String description;
-    @SerializedName("isFavorite")
-    @Expose
+
+    @SerializedName("isFavorite") @Expose
     private Boolean isFavorite;
-    @SerializedName("createdDate")
-    @Expose
+
+    @SerializedName("createdDate") @Expose
     private Integer createdDate;
-    @SerializedName("photoUtl")
-    @Expose
+
+    @SerializedName("photoUtl") @Expose
     private String photoUtl;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

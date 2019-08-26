@@ -29,7 +29,7 @@ public class MemesDiffUtilCallback extends DiffUtil.Callback {
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
         Meme oldMeme = mOldMemeList.get(oldItemPosition);
         Meme newMeme = mNewMemeList.get(newItemPosition);
-        return oldMeme.getId().equals(newMeme.getId());
+        return oldMeme.getId() == newMeme.getId();
     }
 
     @Override
