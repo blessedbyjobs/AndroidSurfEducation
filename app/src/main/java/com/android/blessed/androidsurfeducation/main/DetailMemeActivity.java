@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.android.blessed.androidsurfeducation.R;
 import com.android.blessed.androidsurfeducation.databinding.DetailMemeActivityBinding;
+import com.android.blessed.androidsurfeducation.db.MemeDAO;
+import com.android.blessed.androidsurfeducation.db.MemesDatabase;
 import com.android.blessed.androidsurfeducation.global.GlobalApplication;
 import com.android.blessed.androidsurfeducation.login.PreferencesHelper;
 import com.android.blessed.androidsurfeducation.models.Meme;
