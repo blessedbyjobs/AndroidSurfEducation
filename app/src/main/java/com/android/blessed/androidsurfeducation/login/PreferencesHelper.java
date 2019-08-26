@@ -9,16 +9,16 @@ import javax.inject.Singleton;
 
 @Singleton
 public class PreferencesHelper implements SharedPreferencesHelper {
-    private final SharedPreferences mPref;
+    private SharedPreferences mPref;
 
     public static final String PREF_FILE_NAME = "surf_android_education_pref_file";
 
-    private static final String TOKEN = "token";
-    private static final String ID = "id";
-    private static final String USERNAME = "username";
-    private static final String FIRSTNAME = "firstName";
-    private static final String LASTNAME = "lastName";
-    private static final String USERDESCRIPTION = "userDescription";
+    public final String TOKEN = "token";
+    public final String ID = "id";
+    public final String USERNAME = "username";
+    public final String FIRSTNAME = "firstName";
+    public final String LASTNAME = "lastName";
+    public final String USERDESCRIPTION = "userDescription";
 
     @Inject
     public PreferencesHelper(Context context) {

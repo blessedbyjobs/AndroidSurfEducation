@@ -10,11 +10,33 @@
     <string name="password_error_text">Слишком короткий пароль</string>
     <string name="login_error_text">Вы ввели неверные данные.\nПопробуйте еще раз</string>
     <string name="search_hint">Найди мем по душе</string>
-    
+
     <string name="bottom_memes">Мемы</string>
     <string name="bottom_add_meme">Добавить мем</string>
     <string name="bottom_profile">Профиль</string>
 
     <string name="internet_error_text">Отсутствует интернет-соединение.\nПопробуйте позже</string>
     <string name="memes_query_error_text">Не удалось загрузить ленту\nОбновите экран или попробуйте позже</string>
+
+    <string name="share_meme_hint">Кинь мемас</string>
+    <string name="like_meme_hint">Лайкни мемас</string>
+
+    <plurals name="meme_publication_date_days">
+        <item quantity="zero">Сегодня</item>
+        <item quantity="one">%1$s день назад</item>
+        <item quantity="few">%1$s дня назад</item>
+        <item quantity="many">%1$s дней назад</item>
+    </plurals>
+
+    <plurals name="meme_publication_date_month">
+        <item quantity="one">%1$s месяц назад</item>
+        <item quantity="few">%1$s месяца назад</item>
+        <item quantity="many">%1$s месяцев назад</item>
+    </plurals>
+
+    <plurals name="meme_publication_date_year">
+        <item quantity="one">%1$s год назад</item>
+        <item quantity="few">%1$s года назад</item>
+        <item quantity="many">%1$s лет назад</item>
+    </plurals>
 </resources>
