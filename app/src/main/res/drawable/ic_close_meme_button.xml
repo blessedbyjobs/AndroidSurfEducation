@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:color="@color/createMemeTextColor"
+    tools:targetApi="lollipop">
+    <item android:id="@android:id/mask">
+        <shape android:shape="oval">
+            <solid android:color="@color/backgroundBrighterColor" />
+            <corners android:radius="@dimen/corner_radius" />
+        </shape>
+    </item>
+
+    <item android:id="@android:id/background">
+        <shape
+            android:innerRadius="0dp"
+            android:shape="ring"
+            android:thicknessRatio="2"
+            android:useLevel="false" >
+            <solid android:color="@color/backgroundBrighterColor"/>
+        </shape>
+    </item>
+
+
+</ripple>

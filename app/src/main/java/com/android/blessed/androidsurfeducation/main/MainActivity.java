@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.bottom_navigation_add_meme:
-                        fragment = new AddMemeFragment();
+                        MainActivity.this.startActivity(new Intent(MainActivity.this, CreateMemeActivity.class));
                         break;
 
                     case R.id.bottom_navigation_profile:
