@@ -1,9 +1,13 @@
 package com.android.blessed.androidsurfeducation.main;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -11,6 +15,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -39,6 +45,8 @@ public class MemesFragment extends MvpAppCompatFragment implements MemesView {
     private TextView mTextView;
     private ProgressBar mProgressBar;
 
+    private Toolbar mToolbar;
+
     @InjectPresenter
     MemesPresenter mMemesPresenter;
 
@@ -47,9 +55,25 @@ public class MemesFragment extends MvpAppCompatFragment implements MemesView {
         return new MemesPresenter();
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        getActivity().getMenuInflater().inflate(R.menu.memes_menu, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_search) {
+            Intent intent = new Intent(getActivity(), SearchActivity.class);
+            startActivity(intent);
+        }
+        return true;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.memes_fragment, null);
     }
 
@@ -60,6 +84,10 @@ public class MemesFragment extends MvpAppCompatFragment implements MemesView {
         mProgressBar = getView().findViewById(R.id.progress_bar);
         mRecyclerView = getView().findViewById(R.id.memes_recycler_view);
         mSwipeRefreshLayout = getView().findViewById(R.id.swipe_to_refresh_memes);
+        mToolbar = getView().findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
+        mToolbar.inflateMenu(R.menu.memes_menu);
+        getActivity().setTitle(getResources().getString(R.string.main_activity_name));
 
         mMemes = new ArrayList<>();
 

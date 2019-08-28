@@ -46,4 +46,7 @@
         <item quantity="few">%1$s года назад</item>
         <item quantity="many">%1$s лет назад</item>
     </plurals>
+    
+    <string name="profile_menu_about">О приложении</string>
+    <string name="profile_menu_logout">Выйти</string>
 </resources>

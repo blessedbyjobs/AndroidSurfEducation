@@ -250,7 +250,7 @@ public class CreateMemeActivity extends MvpAppCompatActivity implements CreateMe
 
         // фото пришло повернутое -> поворачиваем обратно
         Matrix matrix = new Matrix();
-        matrix.postRotate(-90);
+        matrix.postRotate(90);
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
         // подгоняем под размер экрана

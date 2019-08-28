@@ -103,8 +103,7 @@
                 <ImageView
                     android:id="@+id/image_container"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_meme_image" />
+                    android:layout_height="wrap_content"/>
 
                 <ImageButton
                     android:id="@+id/delete_image"
