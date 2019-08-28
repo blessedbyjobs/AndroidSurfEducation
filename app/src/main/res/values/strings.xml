@@ -20,6 +20,13 @@
 
     <string name="share_meme_hint">Кинь мемас</string>
     <string name="like_meme_hint">Лайкни мемас</string>
+    
+    <string name="create_meme_text">Создать</string>
+    <string name="create_meme_title_text">Заголовок</string>
+    <string name="create_meme_description_text">Текст</string>
+    <string name="create_meme_text_toolbar">Создать свой мем</string>
+    <string name="load_from_galery_text">Из галереи</string>
+    <string name="take_a_photo">Сделать фото</string>
 
     <plurals name="meme_publication_date_days">
         <item quantity="zero">Сегодня</item>
