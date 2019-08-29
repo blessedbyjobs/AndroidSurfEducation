@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:background="@color/backgroundColor"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".main.DetailMemeActivity"
+        tools:context=".detail_meme.DetailMemeActivity"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
