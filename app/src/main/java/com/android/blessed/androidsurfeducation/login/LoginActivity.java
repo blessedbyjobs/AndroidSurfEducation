@@ -3,6 +3,8 @@ package com.android.blessed.androidsurfeducation.login;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.text.Editable;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
@@ -80,6 +82,56 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
                     mPasswordBox.setHasFocus(true);
                 }
                 return true;
+            }
+        });
+        mLoginBoxText.addTextChangedListener(new PhoneNumberFormattingTextWatcher() {
+            private boolean backspacingFlag = false;
+            private boolean editedFlag = false;
+            private int cursorComplement;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                cursorComplement = s.length()-mLoginBoxText.getSelectionStart();
+
+                if (count > after) {
+                    backspacingFlag = true;
+                } else {
+                    backspacingFlag = false;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String string = s.toString();
+                String phone = string.replaceAll("[^\\d]", "");
+
+                if (!editedFlag) {
+                    // 9999999999 <- 10+
+                    // (999) 999-99-99
+                    if (phone.length() >= 10 && !backspacingFlag) {
+                        editedFlag = true;
+                        String ans = "(" + phone.substring(0, 3) + ") " + phone.substring(3,6) + "-" + phone.substring(6,8) + "-" + phone.substring(8,10);
+                        mLoginBoxText.setText(ans);
+                        mLoginBoxText.setSelection(mLoginBoxText.getText().length()-cursorComplement);
+                    } else if (phone.length() >= 6 && !backspacingFlag) {
+                        // 999999999 <- 6+
+                        // (999) 999-999
+                        editedFlag = true;
+                        String ans = "(" + phone.substring(0, 3) + ") " + phone.substring(3,6) + "-" + phone.substring(6);
+                        mLoginBoxText.setText(ans);
+                        mLoginBoxText.setSelection(mLoginBoxText.getText().length()-cursorComplement);
+                    } else if (phone.length() >= 3 && !backspacingFlag) {
+                        // 99999 <- 3+
+                        // (999) 99
+                        editedFlag = true;
+                        String ans = "(" +phone.substring(0, 3) + ") " + phone.substring(3);
+                        mLoginBoxText.setText(ans);
+                        mLoginBoxText.setSelection(mLoginBoxText.getText().length()-cursorComplement);
+                    }
+                    // We just edited the field, ignoring this cicle of the watcher and getting ready for the next
+                } else {
+                    editedFlag = false;
+                }
             }
         });
 
