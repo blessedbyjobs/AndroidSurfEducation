@@ -3,6 +3,7 @@ package com.android.blessed.androidsurfeducation.main;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.util.Log;
@@ -10,15 +11,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.android.blessed.androidsurfeducation.R;
+import com.android.blessed.androidsurfeducation.global.GlobalApplication;
 import com.android.blessed.androidsurfeducation.models.Meme;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 
@@ -77,22 +83,25 @@ public class MemesAdapter extends RecyclerView.Adapter<MemesAdapter.MemesViewHol
 
     @Override
     public void onBindViewHolder(@NotNull final MemesViewHolder holder, final int position) {
+        /*MemesViewHolder vh = (MemesViewHolder) holder;
+        Meme item = mMemesList.get(position);
+        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams)vh.mMeme.getLayoutParams();
+        float ratio = item.getPhotoUtl().getHeight() / item.getWidth();
+        rlp.height = (int) (rlp.width * ratio);
+        Glide.with(mContext)
+                .load(item.getPhotoUtl())
+                .placeholder(PlaceHolderDrawableHelper.getBackgroundDrawable(position))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(vh.mMeme);*/
+
         Meme mMemeData = mMemesList.get(position);
         Glide.with(mContext)
-                .asBitmap()
+                .asDrawable()
                 .load(mMemeData.getPhotoUtl())
-                .into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        holder.mMeme.setImageBitmap(resource);
-                        holder.mMeme.setScaleType(ImageView.ScaleType.FIT_XY);
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-
-                    }
-                });
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(holder.mMeme);
         holder.mMemeTitle.setText(mMemeData.getTitle());
 
         // старт активити детального мема
@@ -101,6 +110,12 @@ public class MemesAdapter extends RecyclerView.Adapter<MemesAdapter.MemesViewHol
             i.putExtra("MEME", mMemesList.get(position));
             view.getContext().startActivity(i);
         });
+    }
+
+    private Bitmap scaleImage(BitmapDrawable image) {
+        int width = GlobalApplication.getAppContext().getResources().getDisplayMetrics().widthPixels;
+        int nh = (int) ( image.getBitmap().getHeight() * ((float) width / (image.getBitmap().getWidth() * 2)) );
+        return Bitmap.createScaledBitmap(image.getBitmap(), width / 2, nh, true);
     }
 
     @Override

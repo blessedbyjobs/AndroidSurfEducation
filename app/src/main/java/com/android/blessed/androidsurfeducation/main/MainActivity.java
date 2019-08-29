@@ -17,6 +17,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
     private FrameLayout mFragmentContainer;
 
+    private Fragment mMemes;
+    private Fragment mProfile;
+
     private BottomNavigationView mBottomNavigationView;
 
     @Override
@@ -44,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
     private void initializeFields() {
         mBottomNavigationView = findViewById(R.id.bottom_navigation_view);
         mFragmentContainer = findViewById(R.id.fragment_container);
+
+        mMemes = new MemesFragment();
+        mProfile = new ProfileFragment();
     }
 
     private void setOnClickListeners() {
@@ -51,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             Fragment fragment = null;
             switch (item.getItemId()) {
                 case R.id.bottom_navigation_memes:
-                    fragment = new MemesFragment();
+                    fragment = mMemes;
                     break;
 
                 case R.id.bottom_navigation_add_meme:
@@ -59,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.bottom_navigation_profile:
-                    fragment = new ProfileFragment();
+                    fragment = mProfile;
                     break;
             }
 
