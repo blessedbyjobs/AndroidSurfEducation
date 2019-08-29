@@ -1,4 +1,4 @@
-package com.android.blessed.androidsurfeducation.main;
+package com.android.blessed.androidsurfeducation.detail_meme;
 
 import com.android.blessed.androidsurfeducation.global.GlobalApplication;
 import com.android.blessed.androidsurfeducation.login.PreferencesHelper;

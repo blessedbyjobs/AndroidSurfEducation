@@ -1,4 +1,4 @@
-package com.android.blessed.androidsurfeducation.main;
+package com.android.blessed.androidsurfeducation.detail_meme;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.BindingAdapter;
@@ -6,8 +6,6 @@ import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -15,20 +13,13 @@ import android.widget.TextView;
 
 import com.android.blessed.androidsurfeducation.R;
 import com.android.blessed.androidsurfeducation.databinding.DetailMemeActivityBinding;
-import com.android.blessed.androidsurfeducation.db.MemeDAO;
-import com.android.blessed.androidsurfeducation.db.MemesDatabase;
 import com.android.blessed.androidsurfeducation.global.GlobalApplication;
-import com.android.blessed.androidsurfeducation.login.PreferencesHelper;
 import com.android.blessed.androidsurfeducation.models.Meme;
 import com.android.blessed.androidsurfeducation.models.UserInfo;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.bumptech.glide.Glide;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -55,6 +46,7 @@ public class DetailMemeActivity extends MvpAppCompatActivity implements DetailMe
                 return true;
 
             case R.id.action_share:
+                sendMemeToSomebody();
                 return true;
         }
 
@@ -89,6 +81,14 @@ public class DetailMemeActivity extends MvpAppCompatActivity implements DetailMe
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToolbar.setNavigationIcon(R.drawable.ic_close_meme);
+    }
+
+    void sendMemeToSomebody() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, mMeme.getTitle() + " " + mMeme.getDescription() + " " + mMeme.getPhotoUtl());
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, "Отправить"));
     }
 
     @BindingAdapter({"bind:imgUrl"})

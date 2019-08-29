@@ -1,4 +1,4 @@
-package com.android.blessed.androidsurfeducation.main;
+package com.android.blessed.androidsurfeducation.detail_meme;
 
 import com.arellomobile.mvp.MvpView;
 
