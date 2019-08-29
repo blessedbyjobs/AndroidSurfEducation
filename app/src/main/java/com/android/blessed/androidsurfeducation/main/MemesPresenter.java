@@ -1,6 +1,8 @@
 package com.android.blessed.androidsurfeducation.main;
 
+import androidx.annotation.Nullable;
 import androidx.loader.content.AsyncTaskLoader;
+import androidx.loader.content.Loader;
 
 import com.android.blessed.androidsurfeducation.global.GlobalApplication;
 import com.android.blessed.androidsurfeducation.models.Meme;
@@ -25,10 +27,10 @@ public class MemesPresenter extends MvpPresenter<MemesView> implements MemesPres
 
     @Override
     public void loadMemes() {
-        MemesLoader Loader = new MemesLoader();
-        Loader.onStartLoading();
-        Loader.loadInBackground();
-        Loader.onEndLoading();
+        MemesLoader memesLoader = new MemesLoader();
+        memesLoader.startLoading();
+        memesLoader.loadInBackground();
+        memesLoader.stopLoading();
     }
 
     private void sendRequest() {
@@ -55,18 +57,22 @@ public class MemesPresenter extends MvpPresenter<MemesView> implements MemesPres
             super(GlobalApplication.getAppContext());
         }
 
+        @Nullable
         @Override
-        protected void onStartLoading() {
-            getViewState().preExecute();
-        }
-
-        @Override
-        public List<String> loadInBackground() {
+        public Object loadInBackground() {
             sendRequest();
             return null;
         }
 
-        public void onEndLoading() {
+        @Override
+        protected void onStartLoading() {
+            super.onStartLoading();
+            getViewState().preExecute();
+        }
+
+        @Override
+        protected void onStopLoading() {
+            super.onStopLoading();
             getViewState().postExecute();
         }
     }

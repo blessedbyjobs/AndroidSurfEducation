@@ -17,4 +17,7 @@ public interface ServerAPI {
 
     @GET(ServerUrls.GET_MEMES)
     Call<List<Meme>> getMemes();
+
+    @POST(ServerUrls.LOGOUT)
+    Call<Void> logoutUser();
 }

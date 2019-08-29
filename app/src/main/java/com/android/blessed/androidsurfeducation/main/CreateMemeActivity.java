@@ -43,6 +43,8 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -102,7 +104,7 @@ public class CreateMemeActivity extends MvpAppCompatActivity implements CreateMe
                 meme.setDescription(String.valueOf(mMemeDescriptionText.getText()));
                 meme.setIsFavorite(true);
                 meme.setCreatedDate((int) new Date().getTime());
-                meme.setPhotoUtl(String.valueOf(mMemeImage.getTag()));
+                meme.setPhotoUtl(currentPhotoPath);
                 mCreateMemePresenter.insertMemeIntoDatabase(meme);
                 return true;
         }
@@ -190,8 +192,21 @@ public class CreateMemeActivity extends MvpAppCompatActivity implements CreateMe
     // работа с загрузкой изображений
 
     private void choosePhotoFromGallery() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, GALLERY);
+        // Создаем файл для картинки
+        File photoFile = null;
+        try {
+            photoFile = createImageFile();
+        } catch (IOException ex) {
+
+        }
+        // если с ним все ок, то идем дальше
+        if (photoFile != null) {
+            Uri photoURI = FileProvider.getUriForFile(this,
+                    "com.android.blessed.androidsurfeducation",
+                    photoFile);
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK, photoURI);
+            startActivityForResult(galleryIntent, GALLERY);
+        }
     }
 
     private void takePhotoFromCamera() {
@@ -250,7 +265,7 @@ public class CreateMemeActivity extends MvpAppCompatActivity implements CreateMe
 
         // фото пришло повернутое -> поворачиваем обратно
         Matrix matrix = new Matrix();
-        matrix.postRotate(-90);
+        matrix.postRotate(90);
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
         // подгоняем под размер экрана
@@ -280,8 +295,14 @@ public class CreateMemeActivity extends MvpAppCompatActivity implements CreateMe
                                 @Override
                                 public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                                     mMemeImage.setImageBitmap(scaleImage(resource));
+                                    try {
+                                        resource.compress(Bitmap.CompressFormat.JPEG, 100,  new FileOutputStream(currentPhotoPath));
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                    }
                                     setDeleteMemeButtonVisibility(View.VISIBLE);
                                     mMemeImageIsReady = true;
+                                    isMemeReady();
                                 }
 
                                 @Override
@@ -300,10 +321,8 @@ public class CreateMemeActivity extends MvpAppCompatActivity implements CreateMe
 
                     setDeleteMemeButtonVisibility(View.VISIBLE);
                     mMemeImageIsReady = true;
+                    isMemeReady();
                 }
-                break;
-            default:
-                isMemeReady();
                 break;
         }
     }
@@ -377,6 +396,7 @@ public class CreateMemeActivity extends MvpAppCompatActivity implements CreateMe
                 if (mMemeTitleText.getText().length() == 0 && mMemeTitleIsReady) {
                     mMemeTitleIsReady = false;
                     mCreateMemeButton.setEnabled(false);
+                    isMemeReady();
                 }
             }
         });

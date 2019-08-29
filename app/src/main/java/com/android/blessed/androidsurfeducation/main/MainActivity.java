@@ -17,23 +17,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
     private FrameLayout mFragmentContainer;
 
-    private Toolbar mToolbar;
+    private Fragment mMemes;
+    private Fragment mProfile;
+
     private BottomNavigationView mBottomNavigationView;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.user_info_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_search) {
-            Intent intent = new Intent(this, SearchActivity.class);
-            startActivity(intent);
-        }
-        return true;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
         initializeFields();
         setOnClickListeners();
-
-        setSupportActionBar(mToolbar);
 
         loadFragment(new MemesFragment());
     }
@@ -60,32 +45,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeFields() {
-        mToolbar = findViewById(R.id.toolbar);
         mBottomNavigationView = findViewById(R.id.bottom_navigation_view);
         mFragmentContainer = findViewById(R.id.fragment_container);
+
+        mMemes = new MemesFragment();
+        mProfile = new ProfileFragment();
     }
 
     private void setOnClickListeners() {
-        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment = null;
-                switch (item.getItemId()) {
-                    case R.id.bottom_navigation_memes:
-                        fragment = new MemesFragment();
-                        break;
+        mBottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            Fragment fragment = null;
+            switch (item.getItemId()) {
+                case R.id.bottom_navigation_memes:
+                    fragment = mMemes;
+                    break;
 
-                    case R.id.bottom_navigation_add_meme:
-                        MainActivity.this.startActivity(new Intent(MainActivity.this, CreateMemeActivity.class));
-                        break;
+                case R.id.bottom_navigation_add_meme:
+                    MainActivity.this.startActivity(new Intent(MainActivity.this, CreateMemeActivity.class));
+                    break;
 
-                    case R.id.bottom_navigation_profile:
-                        fragment = new ProfileFragment();
-                        break;
-                }
-
-                return loadFragment(fragment);
+                case R.id.bottom_navigation_profile:
+                    fragment = mProfile;
+                    break;
             }
+
+            return loadFragment(fragment);
         });
     }
 }
